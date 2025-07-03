@@ -36,3 +36,7 @@ class EliminarPropiedadView(LoginRequiredMixin, DeleteView):
     model = Propiedad
     template_name = "myapp/propiedades/eliminar.html"
     success_url = reverse_lazy("propiedades_lista")
+
+@login_required
+def dashboard(request):
+    return HttpResponse("Hola {{ user.username }}. Este es tu panel privado.")
