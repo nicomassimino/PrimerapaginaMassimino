@@ -1,10 +1,16 @@
 from django.urls import path
-from . import views
+from .views import (
+    ListaPropiedadesView,
+    DetallePropiedadView,
+    CrearPropiedadView,
+    EditarPropiedadView,
+    EliminarPropiedadView
+)
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('autor/', views.formulario_autor, name='form_autor'),
-    path('categoria/', views.formulario_categoria, name='form_categoria'),
-    path('post/', views.formulario_post, name='form_post'),
-    path('buscar/', views.buscar_post, name='buscar_post'),
+    path('', ListaPropiedadesView.as_view(), name='propiedades_lista'),
+    path('<int:pk>/', DetallePropiedadView.as_view(), name='propiedad_detalle'),
+    path('crear/', CrearPropiedadView.as_view(), name='propiedad_crear'),
+    path('editar/<int:pk>/', EditarPropiedadView.as_view(), name='propiedad_editar'),
+    path('eliminar/<int:pk>/', EliminarPropiedadView.as_view(), name='propiedad_eliminar'),
 ]

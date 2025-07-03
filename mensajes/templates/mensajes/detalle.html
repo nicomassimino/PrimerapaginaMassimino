@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ mensaje.asunto }}</h2>
+<p><strong>De:</strong> {{ mensaje.remitente.username }}</p>
+<p><strong>Fecha:</strong> {{ mensaje.fecha_envio }}</p>
+<p>{{ mensaje.contenido }}</p>
+<a href="{% url 'mensajes:inbox' %}">Volver a bandeja</a>
+{% endblock %}

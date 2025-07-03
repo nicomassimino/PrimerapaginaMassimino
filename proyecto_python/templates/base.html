@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Origami Inmobiliaria</title>
+</head>
+<body>
+<nav>
+    <a href="{% url 'propiedades_lista' %}">Home</a> |
+    <a href="{% url 'about' %}">Acerca de mí</a> |
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a> |
+        <a href="{% url 'perfil' %}">Perfil</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a> |
+        <a href="{% url 'signup' %}">Registro</a>
+    {% endif %}
+    <a href="{% url 'mensajes:inbox' %}">Mensajes</a>
+</nav>
+
+<hr>
+{% block content %}
+{% endblock %}
+</body>
+</html>

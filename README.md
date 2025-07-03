@@ -1,14 +1,22 @@
-# Proyecto Django - TuPrimeraPaginaMassimino
+# Proyecto Origami - Inmobiliaria en Django
 
-## Funcionalidades
+Aplicación web inmobiliaria que permite:
+- Registro/Login/Perfil de usuarios
+- Crear, editar, ver y eliminar propiedades
+- Sistema de mensajería entre usuarios
+- Subida de imágenes
+- Navegación con herencia de templates
 
-- Herencia de plantillas HTML.
-- Tres modelos: Autor, Categoría, Post.
-- Formulario para crear cada modelo.
-- Buscador de posts por título.
+## Tecnologías
+- Django
+- HTML/CSS
+- Bootstrap (opcional)
+- CKEditor
 
-## Orden para probar
+## Cómo correr
+1. Cloná el repo
+2. `pip install -r requirements.txt`
+3. `python manage.py migrate`
+4. `python manage.py runserver`
 
-1. Iniciar servidor con `python manage.py runserver`
-2. Visitar `/autor/`, `/categoria/`, y `/post/` para cargar datos.
-3. Visitar `/buscar/` para probar el buscador.
+> No incluye `db.sqlite3` ni la carpeta `media/`

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ propiedad.titulo }} - {{ propiedad.ubicacion }}</h2>
+<img src="{{ propiedad.imagen.url }}" width="300">
+<p>{{ propiedad.descripcion|safe }}</p>
+<p>Publicado el: {{ propiedad.fecha_publicacion }}</p>
+{% if user.is_authenticated %}
+  <a href="{% url 'propiedad_editar' propiedad.pk %}">Editar</a> |
+  <a href="{% url 'propiedad_eliminar' propiedad.pk %}">Eliminar</a>
+{% endif %}
+<a href="{% url 'propiedades_lista' %}">Volver</a>
+{% endblock %}

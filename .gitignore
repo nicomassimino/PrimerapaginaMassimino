@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Django media files
+media/
+
+# Static files (si usaste carpeta static local)
+staticfiles/

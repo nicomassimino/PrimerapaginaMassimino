@@ -1,44 +1,38 @@
-from django.shortcuts import render
-from .forms import AutorForm, CategoriaForm, PostForm, BusquedaPostForm
-from .models import Post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from .models import Propiedad
+from .forms import PropiedadForm
 
-def index(request):
-    return render(request, 'myapp/index.html')
+class ListaPropiedadesView(ListView):
+    model = Propiedad
+    template_name = "myapp/propiedades/lista.html"
+    context_object_name = "propiedades"
 
-def formulario_autor(request):
-    if request.method == 'POST':
-        form = AutorForm(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = AutorForm()
-    return render(request, 'myapp/formulario.html', {'form': form, 'titulo': 'Formulario Autor'})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not context['propiedades']:
+            context['mensaje'] = "No hay propiedades aún."
+        return context
 
-def formulario_categoria(request):
-    if request.method == 'POST':
-        form = CategoriaForm(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = CategoriaForm()
-    return render(request, 'myapp/formulario.html', {'form': form, 'titulo': 'Formulario Categoría'})
+class DetallePropiedadView(DetailView):
+    model = Propiedad
+    template_name = "myapp/propiedades/detalle.html"
+    context_object_name = "propiedad"
 
-def formulario_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = PostForm()
-    return render(request, 'myapp/formulario.html', {'form': form, 'titulo': 'Formulario Post'})
+class CrearPropiedadView(LoginRequiredMixin, CreateView):
+    model = Propiedad
+    form_class = PropiedadForm
+    template_name = "myapp/propiedades/crear.html"
+    success_url = reverse_lazy("propiedades_lista")
 
-def buscar_post(request):
-    resultado = None
-    if request.method == 'POST':
-        form = BusquedaPostForm(request.POST)
-        if form.is_valid():
-            titulo = form.cleaned_data['titulo']
-            resultado = Post.objects.filter(titulo__icontains=titulo)
-    else:
-        form = BusquedaPostForm()
-    return render(request, 'myapp/buscar.html', {'form': form, 'resultado': resultado})
+class EditarPropiedadView(LoginRequiredMixin, UpdateView):
+    model = Propiedad
+    form_class = PropiedadForm
+    template_name = "myapp/propiedades/editar.html"
+    success_url = reverse_lazy("propiedades_lista")
+
+class EliminarPropiedadView(LoginRequiredMixin, DeleteView):
+    model = Propiedad
+    template_name = "myapp/propiedades/eliminar.html"
+    success_url = reverse_lazy("propiedades_lista")
