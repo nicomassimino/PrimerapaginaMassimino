@@ -1,42 +1,54 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
 from .models import Propiedad
-from .forms import PropiedadForm
+from .forms import MensajeContactoForm
+from django.contrib import messages
+from django.shortcuts import redirect
 
-class ListaPropiedadesView(ListView):
-    model = Propiedad
-    template_name = "myapp/propiedades/lista.html"
-    context_object_name = "propiedades"
+def home(request):
+    propiedades = Propiedad.objects.all()
+    return render(request, 'myapp/index.html', {'propiedades': propiedades})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if not context['propiedades']:
-            context['mensaje'] = "No hay propiedades aún."
-        return context
+def about(request):
+    return render(request, 'myapp/about.html')
 
-class DetallePropiedadView(DetailView):
-    model = Propiedad
-    template_name = "myapp/propiedades/detalle.html"
-    context_object_name = "propiedad"
+def propiedades_lista(request):
+    propiedades = Propiedad.objects.all()
+    return render(request, 'myapp/propiedades_lista.html', {'propiedades': propiedades})
 
-class CrearPropiedadView(LoginRequiredMixin, CreateView):
-    model = Propiedad
-    form_class = PropiedadForm
-    template_name = "myapp/propiedades/crear.html"
-    success_url = reverse_lazy("propiedades_lista")
+def propiedad_detalle(request, id):
+    propiedad = get_object_or_404(Propiedad, id=id)
+    return render(request, 'myapp/propiedad_detalle.html', {'propiedad': propiedad})
 
-class EditarPropiedadView(LoginRequiredMixin, UpdateView):
-    model = Propiedad
-    form_class = PropiedadForm
-    template_name = "myapp/propiedades/editar.html"
-    success_url = reverse_lazy("propiedades_lista")
+def propiedades_lista(request):
+    zona = request.GET.get('zona', '')  # Obtener zona del filtro
+    propiedades = Propiedad.objects.all()
 
-class EliminarPropiedadView(LoginRequiredMixin, DeleteView):
-    model = Propiedad
-    template_name = "myapp/propiedades/eliminar.html"
-    success_url = reverse_lazy("propiedades_lista")
+    if zona:
+        propiedades = propiedades.filter(titulo__icontains=zona)
 
-@login_required
-def dashboard(request):
-    return HttpResponse("Hola {{ user.username }}. Este es tu panel privado.")
+    # Obtener zonas únicas desde los títulos de propiedades
+    zonas_unicas = set()
+    for propiedad in Propiedad.objects.all():
+        titulo = propiedad.titulo.lower()
+        for z in ["caballito", "almagro", "belgrano", "recoleta", "palermo", "boedo"]:
+            if z in titulo:
+                zonas_unicas.add(z.capitalize())
+
+    zonas = sorted(list(zonas_unicas))
+
+    return render(request, 'myapp/propiedades_lista.html', {
+        'propiedades': propiedades,
+        'zonas': zonas,
+        'zona_seleccionada': zona
+    })
+
+def contacto(request):
+    if request.method == 'POST':
+        form = MensajeContactoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tu mensaje ha sido enviado correctamente.')
+            return redirect('contacto')
+    else:
+        form = MensajeContactoForm()
+    return render(request, 'myapp/contacto.html', {'form': form})

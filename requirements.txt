@@ -1,7 +1,7 @@
 asgiref==3.8.1
 asttokens==3.0.0
 decorator==5.2.1
-Django==5.2.1
+Django==5.2.4
 django-ckeditor==6.7.3
 django-js-asset==3.1.2
 executing==2.2.0

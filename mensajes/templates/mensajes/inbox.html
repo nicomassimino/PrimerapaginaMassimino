@@ -1,17 +1,6 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Bandeja de entrada</h2>
-<a href="{% url 'mensajes:nuevo' %}">Nuevo mensaje</a>
-<ul>
-    {% for mensaje in mensajes %}
-    <li>
-        <strong>{{ mensaje.asunto }}</strong> de {{ mensaje.remitente.username }} -
-        {{ mensaje.fecha_envio|date:"SHORT_DATETIME_FORMAT" }}
-        {% if not mensaje.leido %}<span style="color:red;">(nuevo)</span>{% endif %}
-        - <a href="{% url 'mensajes:detalle' mensaje.pk %}">Ver</a>
-    </li>
-    {% empty %}
-    <p>No hay mensajes.</p>
-    {% endfor %}
-</ul>
+  <h2 class="text-success text-center">Bandeja de Entrada</h2>
+  <p class="text-center">Aquí aparecerán los mensajes recibidos.</p>
 {% endblock %}

@@ -30,3 +30,7 @@ def nuevo_mensaje_view(request):
     else:
         form = MensajeForm()
     return render(request, 'mensajes/nuevo.html', {'form': form})
+
+@login_required
+def inbox(request):
+    return render(request, 'mensajes/inbox.html')

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="mb-4 text-success">{{ propiedad.titulo }}</h2>
+    
+    {% if propiedad.imagen %}
+      <img src="{{ propiedad.imagen.url }}" class="img-fluid mb-4" alt="{{ propiedad.titulo }}">
+    {% endif %}
+
+    <p><strong>Descripción:</strong> {{ propiedad.descripcion }}</p>
+    <p><strong>Precio:</strong> ${{ propiedad.precio }}</p>
+    <p><strong>Metros cuadrados:</strong> {{ propiedad.metros_cuadrados }} m²</p>
+    <p><strong>Ambientes:</strong> {{ propiedad.ambientes }}</p>
+    <p><strong>Balcón:</strong> {{ propiedad.balcon|yesno:"Sí,No" }}</p>
+    <p><strong>Patio:</strong> {{ propiedad.patio|yesno:"Sí,No" }}</p>
+
+    <a href="{% url 'propiedades_lista' %}" class="btn btn-success mt-3">Volver al listado</a>
+  </div>
+{% endblock %}

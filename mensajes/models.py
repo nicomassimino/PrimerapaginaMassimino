@@ -11,3 +11,5 @@ class Mensaje(models.Model):
 
     def __str__(self):
         return f"De {self.remitente} para {self.destinatario} - {self.asunto}"
+
+fecha_publicacion = models.DateField(auto_now_add=True)

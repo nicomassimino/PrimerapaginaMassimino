@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4 text-success">Propiedades disponibles</h2>
+
+  <!-- Formulario de filtro -->
+  <form method="get" class="row mb-4 align-items-end">
+    <div class="col-md-6">
+      <label for="zona" class="form-label">Filtrar por zona:</label>
+      <select name="zona" id="zona" class="form-select">
+        <option value="">Todas las zonas</option>
+        {% for z in zonas %}
+          <option value="{{ z }}" {% if zona_seleccionada == z %}selected{% endif %}>{{ z }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-success w-100 mt-4">Filtrar</button>
+    </div>
+  </form>
+
+  {% if zona_seleccionada %}
+    <p class="text-muted">Mostrando propiedades en: <strong>{{ zona_seleccionada }}</strong></p>
+  {% endif %}
+
+  <div class="row">
+    {% for propiedad in propiedades %}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        {% if propiedad.imagen %}
+          <img src="{{ propiedad.imagen.url }}" class="card-img-top" alt="{{ propiedad.titulo }}" style="height: 200px; object-fit: cover;">
+        {% else %}
+          <img src="https://via.placeholder.com/600x400.png?text=Propiedad" class="card-img-top" alt="Imagen de prueba" style="height: 200px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ propiedad.titulo }}</h5>
+          <p class="card-text">
+            {{ propiedad.descripcion|truncatechars:100 }}<br>
+            <strong>Precio:</strong> ${{ propiedad.precio }}<br>
+            <strong>Metros²:</strong> {{ propiedad.metros_cuadrados }}
+          </p>
+          <a href="{% url 'propiedad_detalle' propiedad.pk %}" class="btn btn-success">Ver más</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No hay propiedades para esta zona.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,18 +1,17 @@
-from .views import dashboard
-from django.urls import path
-from .views import (
-    ListaPropiedadesView,
-    DetallePropiedadView,
-    CrearPropiedadView,
-    EditarPropiedadView,
-    EliminarPropiedadView
-)
+from django.urls import path, include
+from . import views
+from .views_crud import crear_propiedad, editar_propiedad, eliminar_propiedad
+from .views import contacto
 
 urlpatterns = [
-    path('', ListaPropiedadesView.as_view(), name='propiedades_lista'),
-    path('<int:pk>/', DetallePropiedadView.as_view(), name='propiedad_detalle'),
-    path('crear/', CrearPropiedadView.as_view(), name='propiedad_crear'),
-    path('editar/<int:pk>/', EditarPropiedadView.as_view(), name='propiedad_editar'),
-    path('eliminar/<int:pk>/', EliminarPropiedadView.as_view(), name='propiedad_eliminar'),
-    path('dashboard/', dashboard, name='dashboard'),
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('propiedades/', views.propiedades_lista, name='propiedades_lista'),
+    path('propiedades/<int:id>/', views.propiedad_detalle, name='propiedad_detalle'),
+    path('crear/', crear_propiedad, name='crear_propiedad'),
+    path('editar/<int:pk>/', editar_propiedad, name='editar_propiedad'),
+    path('eliminar/<int:pk>/', eliminar_propiedad, name='eliminar_propiedad'),
+    path('mensajes/', include('mensajes.urls')),
+    path('contacto/', contacto, name='contacto'),
 ]
+

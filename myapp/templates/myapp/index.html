@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <!-- Título grande tipo logo con imagen -->
+    <div class="d-flex justify-content-start align-items-center mb-4">
+    </div>
+
+    <!-- Sección Nosotros -->
+    <section id="nosotros" class="mb-5">
+      <h2 class="text-success">Sobre nosotros</h2>
+      <p>
+        Somos una empresa inmobiliaria comprometida con ofrecer las mejores propiedades del mercado.
+        Nuestro objetivo es ayudarte a encontrar tu hogar ideal o una excelente inversión.
+      </p>
+    </section>
+
+    <!-- Sección Propiedades -->
+    <section>
+      <h2 class="text-success">Propiedades destacadas</h2>
+      <div class="row">
+        {% for propiedad in propiedades %}
+          <div class="col-md-4">
+            <div class="card mb-4 h-100">
+              <img src="{{ propiedad.imagen.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Imagen propiedad">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ propiedad.titulo }}</h5>
+                <p class="card-text">{{ propiedad.descripcion|truncatewords:20 }}</p>
+                <a href="{% url 'propiedad_detalle' propiedad.id %}" class="btn btn-success mt-auto">Ver más</a>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <p class="text-muted">No hay propiedades cargadas aún.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+{% endblock %}
